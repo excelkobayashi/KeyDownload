@@ -35,9 +35,11 @@ namespace KeyforgeDownloader
 						break;
 				}
 
-				Deck deck = Process(id);
-				if(deck != null)
-					deck.Save(path);
+				using(Deck deck = Process(id))
+				{
+					if(deck != null)
+						deck.Save(path);
+				}
 			}
 			catch(AggregateException ex)
 			{
