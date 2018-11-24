@@ -12,24 +12,27 @@ namespace KeyforgeDownloader
 	/// </summary>
 	class Program
 	{
+		private static ProgressDisplay ProgressDisplay = new ProgressDisplay();
+
 		/// <summary>
 		///		Prompt the user and process
 		/// </summary>
 		/// <param name="args">Unused</param>
 		static void Main(string[] args)
 		{
+			string input = ConsoleHelper.Prompt("Enter a deck id or URL");
+			if(String.IsNullOrWhiteSpace(input))
+				return;
+
+			string path = ConsoleHelper.PromptFile("Save to image file");
+			if(String.IsNullOrWhiteSpace(path))
+				return;
+
+			Console.WriteLine();
+
 			try
 			{
-				// Like this: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-				// TODO: URLs
-				string id = ConsoleHelper.Prompt("Enter a deck id");
-				if(String.IsNullOrWhiteSpace(id))
-					return;
-
-				string path = ConsoleHelper.PromptFile("Save to image file");
-				if(String.IsNullOrWhiteSpace(path))
-					return;
-
+				string id = IdFinder.FindId(input);
 				Process(id, path);
 			}
 			catch(AggregateException ex)
@@ -64,14 +67,6 @@ namespace KeyforgeDownloader
 		///		Display processing progress
 		/// </summary>
 		/// <param name="progress">Current progress</param>
-		private static void OnProgressUpdated(Progress progress)
-		{
-			Console.Write(progress.Message);
-
-			if(progress.Total > 0)
-				Console.Write($" ({progress.Current} / {progress.Total})");
-
-			Console.WriteLine();
-		}
+		private static void OnProgressUpdated(Progress progress) => ProgressDisplay.Update(progress);
 	}
 }
