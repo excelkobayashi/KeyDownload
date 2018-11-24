@@ -100,6 +100,7 @@
   <ItemGroup>
     <Compile Include="Deck.cs" />
     <Compile Include="DeckParser.cs" />
+    <Compile Include="ConsoleHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Progress.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
